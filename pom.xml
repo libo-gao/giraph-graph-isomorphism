@@ -17,16 +17,6 @@
       <id>cloudera</id>
       <url>https://repository.cloudera.com/artifactory/cloudera-repos/</url>
     </repository>
-    <repository>
-      <id>apache</id>
-      <url>https://repository.apache.org/content/groups/public/</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-    </repository>
   </repositories>
 
   <properties>
@@ -48,6 +38,7 @@
           <target>1.7</target>
         </configuration>
       </plugin>
+
       <plugin>
 		<artifactId>maven-assembly-plugin</artifactId>
 		<version>2.6</version>
@@ -67,36 +58,17 @@
 			</executions>
 		</plugin>
 		<plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-        <version>2.4.2</version>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>shade</goal>
-            </goals>
-            <configuration>
-              <createDependencyReducedPom>false</createDependencyReducedPom>
-              <!-- This is an Mac OSX issue because the default filesystem is case-insensitive,
-                   so multiple versions of files (w/ different cases) clash when Hadoop tries
-                   to unpack the jar. -->
-              <filters>
-                <filter>
-                  <artifact>*:*</artifact>
-                  <excludes>
-                    <exclude>META-INF/*.SF</exclude>
-                    <exclude>META-INF/*.DSA</exclude>
-                    <exclude>META-INF/*.RSA</exclude>
-                    <exclude>META-INF/LICENSE*</exclude>
-                    <exclude>license/*</exclude>
-                  </excludes>
-                </filter>
-              </filters>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.3.2</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+        </plugin>
     </plugins>
   </build>
 
