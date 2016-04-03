@@ -106,9 +106,6 @@
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
-			<properties>
-				<hadoop.version>0.20.203.0</hadoop.version>
-			</properties>
 			<dependencies>
 				<dependency>
 					<groupId>org.apache.hadoop</groupId>
