@@ -32,10 +32,8 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <scala.version>2.10.4</scala.version>
     <!-- find the versions in http://www.cloudera.com/content/cloudera/en/documentation/core/latest/topics/cdh_vd_cdh5_maven_repo.html -->
     <hadoop.version>2.6.0-cdh5.5.0</hadoop.version>
-    <spark.version>1.5.0-cdh5.5.0</spark.version>
   </properties>
 
 
@@ -50,335 +48,26 @@
           <target>1.7</target>
         </configuration>
       </plugin>
-
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-        <version>2.4.2</version>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>shade</goal>
-            </goals>
-            <configuration>
-              <createDependencyReducedPom>false</createDependencyReducedPom>
-              <!-- This is an Mac OSX issue because the default filesystem is case-insensitive,
-                   so multiple versions of files (w/ different cases) clash when Hadoop tries
-                   to unpack the jar. -->
-              <filters>
-                <filter>
-                  <artifact>*:*</artifact>
-                  <excludes>
-                    <exclude>META-INF/*.SF</exclude>
-                    <exclude>META-INF/*.DSA</exclude>
-                    <exclude>META-INF/*.RSA</exclude>
-                    <exclude>META-INF/LICENSE*</exclude>
-                    <exclude>license/*</exclude>
-                  </excludes>
-                </filter>
-              </filters>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
+		<artifactId>maven-assembly-plugin</artifactId>
+		<version>2.6</version>
+		<configuration>
+			<descriptorRefs>
+			<descriptorRef>jar-with-dependencies</descriptorRef>
+			</descriptorRefs>
+			</configuration>
+			<executions>
+				<execution>
+					<id>make-assembly</id> <!-- this is used for inheritance merges -->
+					<phase>package</phase> <!-- bind to the packaging phase -->
+					<goals>
+						<goal>single</goal>
+					</goals>
+				</execution>
+			</executions>
+		</plugin>
     </plugins>
   </build>
-
-
-  <profiles>
-    <profile>
-      <id>hadoop_0.20.203</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <configuration>
-              <excludes>
-                <exclude>**/yarn/**</exclude>
-              </excludes>
-              <testExcludes>
-                <exclude>**/yarn/**</exclude>
-              </testExcludes>
-            </configuration>
-          </plugin>
-          <plugin>
-            <groupId>org.sonatype.plugins</groupId>
-            <artifactId>munge-maven-plugin</artifactId>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>hadoop_1</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <configuration>
-              <excludes>
-                <exclude>**/yarn/**</exclude>
-              </excludes>
-              <testExcludes>
-                <exclude>**/yarn/**</exclude>
-              </testExcludes>
-            </configuration>
-          </plugin>
-          <plugin>
-            <groupId>org.sonatype.plugins</groupId>
-            <artifactId>munge-maven-plugin</artifactId>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>hadoop_non_secure</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <configuration>
-              <excludes>
-                <exclude>**/yarn/**</exclude>
-              </excludes>
-              <testExcludes>
-                <exclude>**/yarn/**</exclude>
-              </testExcludes>
-            </configuration>
-          </plugin>
-          <plugin>
-            <groupId>org.sonatype.plugins</groupId>
-            <artifactId>munge-maven-plugin</artifactId>
-            <configuration>
-              <excludes>
-                **/comm/netty/SaslNettyClient.java,
-                **/comm/netty/SaslNettyServer.java,
-                **/comm/netty/handler/AuthorizeServerHandler.java,
-                **/comm/netty/handler/SaslClientHandler.java,
-                **/comm/netty/handler/SaslServerHandler.java,
-                **/comm/requests/SaslCompleteRequest.java,
-                **/comm/requests/SaslTokenMessageRequest.java,
-                **/comm/SaslConnectionTest.java
-              </excludes> 
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>hadoop_facebook</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <configuration>
-              <excludes>
-                <exclude>**/yarn/**</exclude>
-              </excludes>
-              <testExcludes>
-                <exclude>**/yarn/**</exclude>
-              </testExcludes>
-            </configuration>
-          </plugin>
-          <plugin>
-            <groupId>org.sonatype.plugins</groupId>
-            <artifactId>munge-maven-plugin</artifactId>
-            <configuration>
-              <excludes>
-                **/comm/netty/SaslNettyClient.java,
-                **/comm/netty/SaslNettyServer.java,
-                **/comm/netty/handler/AuthorizeServerHandler.java,
-                **/comm/netty/handler/SaslClientHandler.java,
-                **/comm/netty/handler/SaslServerHandler.java,
-                **/comm/requests/SaslCompleteRequest.java,
-                **/comm/requests/SaslTokenMessageRequest.java,
-                **/comm/SaslConnectionTest.java
-              </excludes>
-            </configuration>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>hadoop_0.23</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <configuration>
-              <excludes>
-                <exclude>**/yarn/**</exclude>
-              </excludes>
-              <testExcludes>
-                <exclude>**/yarn/**</exclude>
-              </testExcludes>
-            </configuration>
-          </plugin>
-          <plugin>
-            <groupId>org.sonatype.plugins</groupId>
-            <artifactId>munge-maven-plugin</artifactId>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <!-- Currently supports hadoop-2.0.2-alpha
-      (see hadoop_yarn profile in giraph-parent POM to change) -->
-    <profile>
-      <id>hadoop_yarn</id>
-      <build>
-        <plugins>
-          <plugin>
-              <groupId>org.sonatype.plugins</groupId>
-              <artifactId>munge-maven-plugin</artifactId>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <!-- The profiles below do not (yet) include any munge flags -->
-    <profile>
-      <id>hadoop_2</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <configuration>
-              <excludes>
-                <exclude>**/yarn/**</exclude>
-              </excludes>
-              <testExcludes>
-                <exclude>**/yarn/**</exclude>
-              </testExcludes>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>hadoop_2.0.0</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <configuration>
-              <excludes>
-                <exclude>**/yarn/**</exclude>
-              </excludes>
-              <testExcludes>
-                <exclude>**/yarn/**</exclude>
-              </testExcludes>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>hadoop_2.0.1</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <configuration>
-              <excludes>
-                <exclude>**/yarn/**</exclude>
-              </excludes>
-              <testExcludes>
-                <exclude>**/yarn/**</exclude>
-              </testExcludes>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>hadoop_2.0.2</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <configuration>
-              <excludes>
-                <exclude>**/yarn/**</exclude>
-              </excludes>
-              <testExcludes>
-                <exclude>**/yarn/**</exclude>
-              </testExcludes>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>hadoop_2.0.3</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <configuration>
-              <excludes>
-                <exclude>**/yarn/**</exclude>
-              </excludes>
-              <testExcludes>
-                <exclude>**/yarn/**</exclude>
-              </testExcludes>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>hadoop_trunk</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <configuration>
-              <excludes>
-                <exclude>**/yarn/**</exclude>
-              </excludes>
-              <testExcludes>
-                <exclude>**/yarn/**</exclude>
-              </testExcludes>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
-
-
 
 
   <dependencies>
@@ -411,11 +100,6 @@
       <groupId>net.sf.jung</groupId>
       <artifactId>jung-graph-impl</artifactId>
       <version>2.0.1</version>
-    </dependency>
-    <dependency>
-      <groupId>org.rogach</groupId>
-      <artifactId>scallop_2.10</artifactId>
-      <version>0.9.5</version>
     </dependency>
      <dependency>
       <groupId>org.apache.giraph</groupId>
