@@ -1,42 +1,47 @@
 package cs698.giraph;
 
 
+import java.io.IOException;
+
+import org.apache.giraph.Algorithm;
 import org.apache.giraph.edge.Edge;
+import org.apache.giraph.graph.BasicComputation;
 import org.apache.giraph.graph.Vertex;
-import org.apache.giraph.utils.MathUtils;
 import org.apache.hadoop.io.DoubleWritable;
+import org.apache.hadoop.io.FloatWritable;
 import org.apache.hadoop.io.LongWritable;
-import org.apache.hadoop.io.NullWritable;
-import org.apache.giraph.examples.*;
 
-/**
- * The PageRank algorithm, with uniform transition probabilities on the edges
- * http://en.wikipedia.org/wiki/PageRank
- */
-public class pagerank extends RandomWalkComputation<NullWritable> {
 
-  @Override
-  protected double transitionProbability(
-      Vertex<LongWritable, DoubleWritable, NullWritable> vertex,
-      double stateProbability, Edge<LongWritable, NullWritable> edge) {
-    // Uniform transition probability
-    return stateProbability / vertex.getNumEdges();
-  }
+@Algorithm(
+		name="PageRank",
+		description="Implementing Basic PageRank Algo without damping factor"
+		)
 
-  @Override
-  protected double recompute(
-      Vertex<LongWritable, DoubleWritable, NullWritable> vertex,
-      Iterable<DoubleWritable> partialRanks, double teleportationProbability) {
-    // Rank contribution from incident neighbors
-    double rankFromNeighbors = MathUtils.sum(partialRanks);
-    // Rank contribution from dangling vertices
-    double danglingContribution =
-        getDanglingProbability() / getTotalNumVertices();
+public class pagerank extends BasicComputation<LongWritable, DoubleWritable, FloatWritable, DoubleWritable>{
+	
 
-    // Recompute rank
-    return (1d - teleportationProbability) *
-        (rankFromNeighbors + danglingContribution) +
-        teleportationProbability / getTotalNumVertices();
-  }
+	public static int maxsupersteps = 20; // we can modify the number of supersteps and accordingly the value of vertices will change
+@Override
+public void compute(Vertex<LongWritable, DoubleWritable, FloatWritable> vertex, Iterable<DoubleWritable> messages) throws IOException{
+	
+	if(getSuperstep() < maxsupersteps){
+		int outedges = vertex.getNumEdges();
+		DoubleWritable rank = new DoubleWritable(vertex.getValue().get() / outedges);
+		for(Edge<LongWritable, FloatWritable> edge : vertex.getEdges()){
+			sendMessage(edge.getTargetVertexId(), rank);
+		}
+	}
+	
+	if(getSuperstep() >= 1){
+		
+		double sum = 0;
+		
+		for(DoubleWritable message : messages){
+			sum = sum + message.get();
+		}
+		vertex.setValue(new DoubleWritable(sum));
+	}
+	
+	vertex.voteToHalt();
 }
-
+}
