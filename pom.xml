@@ -17,6 +17,16 @@
       <id>cloudera</id>
       <url>https://repository.cloudera.com/artifactory/cloudera-repos/</url>
     </repository>
+    <repository>
+      <id>apache</id>
+      <url>https://repository.apache.org/content/groups/public/</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+    </repository>
   </repositories>
 
   <properties>
@@ -121,7 +131,11 @@
       <artifactId>giraph-core</artifactId>
       <version>1.1.0-hadoop2</version>
     </dependency>
-    
+    <dependency>
+	  <groupId>org.apache.giraph</groupId>
+	  <artifactId>giraph-examples</artifactId>
+	  <version>1.1.0-hadoop2</version>
+	</dependency>
   </dependencies>
 
 </project>
