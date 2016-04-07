@@ -27,7 +27,7 @@ public class queryGraph {
     }
 }
 
-public class queryGraphVertex {
+class queryGraphVertex {
     public Set<Long> inNode;
     public Set<Long> outNode;
     public Long id;
