@@ -25,14 +25,13 @@ import tl.lin.data.array.LongArrayWritable;
 public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongArrayWritable, FloatWritable, LongWritable>{
 
 
-	static final String CURR_NODE = NaiveGraphIsomorphism.class.getName() + "curr_node";
-
 	//first superstep store the innode
 	@Override
 	public void compute(Vertex<LongWritable, LongArrayWritable, FloatWritable> vertex, Iterable<LongWritable> messages) throws IOException{
-		//first superstep sends message of in-Vertex information
-		//second superstep stores the in-Vertex information in vertex value
-		//third superstep filters the unqualified vertexes
+		//in superstep 0, 1 do not volt to halt
+		//superstep 0: sends message of in-Vertex information
+		//superstep 1: stores the in-Vertex information in vertex value
+		//superstep 2: filters the unqualified vertexes
 		if(getSuperstep()==0){
 			Iterable<Edge<LongWritable, FloatWritable>> edges = vertex.getEdges();
 			for (Edge<LongWritable, FloatWritable> edge : edges) {
@@ -66,9 +65,9 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 			}
 		}
 		else{
-			
+
+			vertex.voteToHalt();
 		}
-		vertex.voteToHalt();
 	}
 	
 	

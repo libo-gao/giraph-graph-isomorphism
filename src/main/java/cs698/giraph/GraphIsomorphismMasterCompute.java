@@ -81,9 +81,6 @@ public abstract class GraphIsomorphismMasterCompute extends DefaultMasterCompute
 		IllegalAccessException{
 		load_queryGraph();
 		query.build();
-		registerAggregator(NaiveGraphIsomorphism.CURR_NODE,
-				LongSumAggregator.class);
 	}
-
 
 }
