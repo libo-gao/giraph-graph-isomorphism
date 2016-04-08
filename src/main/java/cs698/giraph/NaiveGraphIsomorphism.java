@@ -36,7 +36,7 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, ArrayW
 		}
 		else if(getSuperstep()==1){
 			LongWritable[] tmp = vertex.getValue().get();
-			
+
 		}
 		else if(getSuperstep()==2){
 			((GraphIsomorphismWorkerContext)getWorkerContext()).getInVertex(new Long(0));
