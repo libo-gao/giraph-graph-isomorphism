@@ -2,6 +2,7 @@ package cs698.giraph;
 
 
 import org.apache.giraph.aggregators.Aggregator;
+import org.apache.giraph.aggregators.LongSumAggregator;
 import org.apache.giraph.bsp.CentralizedServiceMaster;
 import org.apache.giraph.combiner.MessageCombiner;
 import org.apache.giraph.conf.DefaultImmutableClassesGiraphConfigurable;
@@ -80,6 +81,8 @@ public abstract class GraphIsomorphismMasterCompute extends DefaultMasterCompute
 		IllegalAccessException{
 		load_queryGraph();
 		query.build();
+		registerAggregator(NaiveGraphIsomorphism.CURR_NODE,
+				LongSumAggregator.class);
 	}
 
 

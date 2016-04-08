@@ -13,6 +13,7 @@ import org.apache.giraph.utils.*;
 import org.apache.giraph.worker.WorkerGlobalCommUsage;
 import org.apache.hadoop.io.*;
 import org.apache.hadoop.io.ArrayWritable;
+import tl.lin.data.array.LongArrayWritable;
 /*
 * Type Parameters:
 * I - Vertex id
@@ -21,26 +22,48 @@ import org.apache.hadoop.io.ArrayWritable;
 * M - Message type
 */
 
-public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, ArrayWritable, FloatWritable, DoubleWritable>{
+public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongArrayWritable, FloatWritable, LongWritable>{
 
+
+	static final String CURR_NODE = NaiveGraphIsomorphism.class.getName() + "curr_node";
 
 	//first superstep store the innode
 	@Override
-	public void compute(Vertex<LongWritable, ArrayWritable, FloatWritable> vertex, Iterable<DoubleWritable> messages) throws IOException{
-		//first superstep does some preprocessing
+	public void compute(Vertex<LongWritable, LongArrayWritable, FloatWritable> vertex, Iterable<LongWritable> messages) throws IOException{
+		//first superstep sends message of in-Vertex information
+		//second superstep stores the in-Vertex information in vertex value
+		//third superstep filters the unqualified vertexes
 		if(getSuperstep()==0){
 			Iterable<Edge<LongWritable, FloatWritable>> edges = vertex.getEdges();
 			for (Edge<LongWritable, FloatWritable> edge : edges) {
-				sendMessage(edge.getTargetVertexId(), new DoubleWritable((double)vertex.getId().get()));
+				sendMessage(edge.getTargetVertexId(), vertex.getId());
 			}
 		}
 		else if(getSuperstep()==1){
-			LongWritable[] tmp = vertex.getValue().get();
-
+			int size = vertex.getValue().getArray().length;
+			int num_message = 0;
+			for (LongWritable item:messages) {
+				num_message++;
+			}
+			long[] newArr = new long[size+num_message];
+			System.arraycopy(vertex.getValue().getArray(),0,newArr,0,num_message);
+			int i = 0;
+			for (LongWritable item:messages){
+				newArr[i+size]=item.get();
+			}
+			vertex.getValue().setArray(newArr);
 		}
 		else if(getSuperstep()==2){
-			((GraphIsomorphismWorkerContext)getWorkerContext()).getInVertex(new Long(0));
-
+			int query_in = ((GraphIsomorphismWorkerContext)getWorkerContext()).getInVertex(new Long(0)).size();
+			int query_out = ((GraphIsomorphismWorkerContext)getWorkerContext()).getOutVertex(new Long(0)).size();
+			int ver_in = vertex.getValue().size();
+			int ver_out = 0;
+			for (Edge<LongWritable,FloatWritable> item:vertex.getEdges()) {
+				ver_out++;
+			}
+			if(ver_in>=query_in&&ver_out>=query_out){
+				sendMessage(vertex.getId(),new LongWritable());
+			}
 		}
 		else{
 			

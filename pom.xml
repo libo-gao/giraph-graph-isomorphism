@@ -110,6 +110,11 @@
 	  <artifactId>giraph-examples</artifactId>
 	  <version>1.1.0-hadoop2</version>
 	</dependency>
+    <dependency>
+       <groupId>tl.lin</groupId>
+       <artifactId>lintools-datatypes</artifactId>
+       <version>1.0.0</version>
+    </dependency>
   </dependencies>
 
 </project>
