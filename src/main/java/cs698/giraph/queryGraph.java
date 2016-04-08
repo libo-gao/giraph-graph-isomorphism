@@ -8,7 +8,11 @@ public class queryGraph {
     HashMap<Long, queryGraphVertex> graph;
 
     queryGraph(){}
-    //todo
+
+    queryGraphVertex getVertex(Long id){
+        return graph.get(id);
+    }
+
     void build(){
         for (Map.Entry<Long, queryGraphVertex> pair : graph.entrySet()) {
             for (Long dest:pair.getValue().outNode) {

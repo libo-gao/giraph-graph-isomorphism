@@ -80,7 +80,6 @@ public abstract class GraphIsomorphismMasterCompute extends DefaultMasterCompute
 		IllegalAccessException{
 		load_queryGraph();
 		query.build();
-
 	}
 
 

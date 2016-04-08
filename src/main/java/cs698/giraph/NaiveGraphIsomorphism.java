@@ -9,11 +9,8 @@ import org.apache.giraph.edge.Edge;
 import org.apache.giraph.graph.BasicComputation;
 import org.apache.giraph.graph.GraphState;
 import org.apache.giraph.graph.Vertex;
-import org.apache.giraph.worker.AllWorkersInfo;
 import org.apache.giraph.worker.WorkerGlobalCommUsage;
-import org.apache.hadoop.io.DoubleWritable;
-import org.apache.hadoop.io.FloatWritable;
-import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.*;
 /*
 * Type Parameters:
 * I - Vertex id
@@ -24,22 +21,12 @@ import org.apache.hadoop.io.LongWritable;
 
 public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, DoubleWritable, FloatWritable, DoubleWritable>{
 
-	  @Override
-	  public void initialize(
-	      GraphState graphState,
-	      WorkerClientRequestProcessor<I, V, E> workerClientRequestProcessor,
-	      CentralizedServiceWorker<I, V, E> serviceWorker,
-	      WorkerGlobalCommUsage workerGlobalCommUsage) 
-	  {
-		  super.initialize(graphState, workerClientRequestProcessor, serviceWorker, workerGlobalCommUsage);
-		  
-	  }
 
 	@Override
 	public void compute(Vertex<LongWritable, DoubleWritable, FloatWritable> vertex, Iterable<DoubleWritable> messages) throws IOException{
 		//first superstep does some preprocessing
 		if(getSuperstep()==0){
-			
+			((GraphIsomorphismWorkerContext)getWorkerContext()).getInVertex((Long)0);
 		}
 		else{
 			
