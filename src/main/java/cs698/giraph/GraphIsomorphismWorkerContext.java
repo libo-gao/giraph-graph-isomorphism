@@ -34,8 +34,20 @@ public class GraphIsomorphismWorkerContext extends WorkerContext {
     private static final Logger LOG = Logger
             .getLogger(GraphIsomorphismWorkerContext.class);
 
+    int getCurr_node(){
+        return curr_node;
+    }
+
+    List<PairOfLongs> getGraphArray(){
+        return graph_array;
+    }
+
+    queryGraph getQueryGraph(){
+        return query;
+    }
+
     //todo
-    void serializeGraph(){
+    private void serializeGraph(){
         //leave this alone, just assume one graph structure
         //1->3->4->6
         //2->3->5
@@ -60,7 +72,7 @@ public class GraphIsomorphismWorkerContext extends WorkerContext {
      * @param configuration The configuration.
      * @return a (possibly empty) set of source vertices
      */
-    void loadQueryGraph(Configuration configuration){
+    private void loadQueryGraph(Configuration configuration){
         Path inputPath = null;
         try {
             inputPath = new Path(inputFile.get(configuration));
@@ -103,7 +115,7 @@ public class GraphIsomorphismWorkerContext extends WorkerContext {
 
     @Override
     public void postSuperstep() {
-        if(getSuperstep()>2){
+        if(getSuperstep()>1){
             if(graph_array.get(curr_node).getRightElement()==new Long(0)) {
                 curr_node++;
             }
