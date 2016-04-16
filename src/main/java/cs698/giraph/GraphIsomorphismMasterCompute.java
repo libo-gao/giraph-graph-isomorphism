@@ -78,8 +78,8 @@ public abstract class GraphIsomorphismMasterCompute extends DefaultMasterCompute
 	@Override
 	public void initialize() throws InstantiationException,
 		IllegalAccessException{
-		//load_queryGraph();
-		//query.build();
+		load_queryGraph();
+		query.build();
 	}
 
 }

@@ -27,8 +27,8 @@ import tl.lin.data.pair.PairOfLongs;
 
 public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongArrayWritable, FloatWritable, LongArrayWritable>{
 
-	private queryGraph graph = ((GraphIsomorphismWorkerContext)getWorkerContext()).getQueryGraph();
-	private List<PairOfLongs> graph_array = ((GraphIsomorphismWorkerContext)getWorkerContext()).getGraphArray();
+	//private queryGraph graph = ((GraphIsomorphismWorkerContext)getWorkerContext()).getQueryGraph();
+	//private List<PairOfLongs> graph_array = ((GraphIsomorphismWorkerContext)getWorkerContext()).getGraphArray();
 
 	//first superstep store the innode
 	@Override
@@ -45,6 +45,11 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 				sendMessage(edge.getTargetVertexId(), new LongArrayWritable(temp));
 			}
 		}
+		//just for test
+		System.out.println("isnull?????????????????????????????????????????????"+((GraphIsomorphismWorkerContext)getWorkerContext()).getQueryGraph()==null);
+		vertex.voteToHalt();
+		//delete after test
+		/*
 		else if(getSuperstep()==1){
 			int size = vertex.getValue().getArray().length;
 			int num_message = 0;
@@ -116,8 +121,9 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 			}
 			vertex.voteToHalt();
 		}
+		*/
 	}
-
+	/*
 	boolean Connected(Vertex<LongWritable, LongArrayWritable, FloatWritable> vertex, int curr, LongArrayWritable msg){
 		//inEdge
 		Set<Long> in = graph.getVertex(graph_array.get(curr).getLeftElement()).inNode;
@@ -167,5 +173,5 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 		}
 		return false;
 	}
-
+	*/
 }

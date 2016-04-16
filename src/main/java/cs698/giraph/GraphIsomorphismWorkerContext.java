@@ -43,8 +43,7 @@ public class GraphIsomorphismWorkerContext extends WorkerContext {
     }
 
     queryGraph getQueryGraph(){
-
-        if(query==null) LOG.info("test___________________________+find null");
+        if(query==null) System.out.println("find+++++++++++++++++++++++++++++++++++++++++++NULL+++++++++++++++++");
         return query;
     }
 
