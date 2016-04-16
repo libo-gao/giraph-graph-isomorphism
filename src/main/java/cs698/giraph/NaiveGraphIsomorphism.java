@@ -29,7 +29,6 @@ import tl.lin.data.pair.PairOfLongs;
 public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongArrayWritable, FloatWritable, LongArrayWritable>{
 
 
-	//first superstep store the innode
 	@Override
 	public void compute(Vertex<LongWritable, LongArrayWritable, FloatWritable> vertex, Iterable<LongArrayWritable> messages) throws IOException{
 		queryGraph graph = ((GraphIsomorphismWorkerContext)getWorkerContext()).getQueryGraph();
@@ -96,7 +95,7 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 						//repeat vertex. ignore
 					}else{
 						for (Edge<LongWritable, FloatWritable> edge : vertex.getEdges()) {
-							if(contains(message, edge.getTargetVertexId().get())) {
+							if(!contains(message, edge.getTargetVertexId().get())) {
 								sendMessage(edge.getTargetVertexId(), message);
 							}
 						}
@@ -115,10 +114,10 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 						if(curr>=graph_array.size()-1){
 							int size = vertex.getValue().size();
 							//could have problems when array exceeds
-							long[] newarr = new long[size+message.size()+1];
+							long[] newarr = new long[size+message.size()+2];
 							System.arraycopy(vertex.getValue().getArray(),0,newarr,0,size);
 							newarr[size]=(long)-1;
-							System.arraycopy(message.getArray(),0,newarr,size+1,message.size());
+							System.arraycopy(addOne(message, vertex.getId().get()),0,newarr,size+1,message.size()+1);
 							vertex.setValue(new LongArrayWritable(newarr));
 						}
 						else {
