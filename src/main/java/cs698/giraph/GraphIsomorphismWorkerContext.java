@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -23,7 +24,7 @@ import tl.lin.data.pair.PairOfLongs;
 public class GraphIsomorphismWorkerContext extends WorkerContext {
 
     private queryGraph query = new queryGraph();
-    private List<PairOfLongs> graph_array;
+    private ArrayList<PairOfLongs> graph_array = new ArrayList<PairOfLongs>();
     private int curr_node;
 
     public static final StrConfOption inputFile =
