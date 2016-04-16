@@ -79,8 +79,8 @@ public class GraphIsomorphismWorkerContext extends WorkerContext {
         try {
             inputPath = new Path(inputFile.get(configuration));
 
-            FileSystem fs = FileSystem.getLocal(getConf());
-            BufferedReader in = new BufferedReader(new InputStreamReader(fs.open(inputPath), Charset.defaultCharset()));
+            FileSystem fs = FileSystem.get(getConf());
+            BufferedReader in = new BufferedReader(new InputStreamReader(fs.open(inputPath), "UTF-8"));
             String line;
             while ((line = in.readLine()) != null) {
                 String[] tokens = line.split(" ");
