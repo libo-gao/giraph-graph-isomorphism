@@ -15,6 +15,7 @@ import org.apache.giraph.utils.*;
 import org.apache.giraph.worker.WorkerGlobalCommUsage;
 import org.apache.hadoop.io.*;
 import org.apache.hadoop.io.ArrayWritable;
+import org.apache.hadoop.yarn.util.SystemClock;
 import tl.lin.data.array.LongArrayWritable;
 import tl.lin.data.pair.PairOfLongs;
 /*
@@ -60,8 +61,8 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 			}
 			vertex.getValue().setArray(newArr);
 
-			int query_in = ((GraphIsomorphismWorkerContext)getWorkerContext()).getInVertex(graph_array.get(0).getKey()).size();
-			int query_out = ((GraphIsomorphismWorkerContext)getWorkerContext()).getOutVertex(graph_array.get(0).getKey()).size();
+			int query_in = ((GraphIsomorphismWorkerContext)getWorkerContext()).getInVertex(graph_array.get(0).getLeftElement()).size();
+			int query_out = ((GraphIsomorphismWorkerContext)getWorkerContext()).getOutVertex(graph_array.get(0).getLeftElement()).size();
 			int ver_in = vertex.getValue().size();
 			int ver_out = 0;
 			for (Edge<LongWritable,FloatWritable> item:vertex.getEdges()) {
@@ -76,8 +77,8 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 		}
 		else{
 			int curr = ((GraphIsomorphismWorkerContext)getWorkerContext()).getCurr_node();
-			int query_in = ((GraphIsomorphismWorkerContext)getWorkerContext()).getInVertex(graph_array.get(curr).getKey()).size();
-			int query_out = ((GraphIsomorphismWorkerContext)getWorkerContext()).getOutVertex(graph_array.get(curr).getKey()).size();
+			int query_in = ((GraphIsomorphismWorkerContext)getWorkerContext()).getInVertex(graph_array.get(curr).getLeftElement()).size();
+			int query_out = ((GraphIsomorphismWorkerContext)getWorkerContext()).getOutVertex(graph_array.get(curr).getLeftElement()).size();
 			int ver_in = vertex.getValue().size();
 			int ver_out = 0;
 			for (Edge<LongWritable,FloatWritable> item:vertex.getEdges()) {
@@ -106,11 +107,24 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 				//vertex has not been visited
 				if(ver_in>=query_in&&ver_out>=query_out){
 					if(!Connected(graph, graph_array, vertex, curr, message)) continue;
+
 					if (graph_array.get(curr).getRightElement() != new Long(0)) {
 						sendMessage(vertex.getId(), addOne(message,vertex.getId().get()));
 					} else {
-						for (Edge<LongWritable, FloatWritable> edge : vertex.getEdges()) {
-							sendMessage(edge.getTargetVertexId(), addOne(message,vertex.getId().get()));
+						//terminate condition
+						if(curr>=graph_array.size()-1){
+							int size = vertex.getValue().size();
+							//could have problems when array exceeds
+							long[] newarr = new long[size+message.size()+1];
+							System.arraycopy(vertex.getValue().getArray(),0,newarr,0,size);
+							newarr[size]=(long)-1;
+							System.arraycopy(message.getArray(),0,newarr,size+1,message.size());
+							vertex.setValue(new LongArrayWritable(newarr));
+						}
+						else {
+							for (Edge<LongWritable, FloatWritable> edge : vertex.getEdges()) {
+								sendMessage(edge.getTargetVertexId(), addOne(message, vertex.getId().get()));
+							}
 						}
 					}
 				}
