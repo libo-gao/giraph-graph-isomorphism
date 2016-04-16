@@ -57,6 +57,7 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 			int i = 0;
 			for (LongArrayWritable item:messages){
 				newArr[i+size]=item.get(0);
+				i++;
 			}
 			vertex.getValue().setArray(newArr);
 
