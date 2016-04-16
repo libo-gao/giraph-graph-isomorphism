@@ -73,6 +73,7 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 				temp[0] = vertex.getId().get();
 				sendMessage(vertex.getId(),new LongArrayWritable(temp));
 			}
+			System.out.println("test______________________________________________________");
 			vertex.voteToHalt();
 		}
 		else{
