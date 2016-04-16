@@ -115,7 +115,7 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 						sendMessage(vertex.getId(), addOne(message,vertex.getId().get()));
 					} else {
 						//terminate condition
-						if(curr>=graph_array.size()-1){
+						if(curr>=graph_array.size()){
 							int size = vertex.getValue().size();
 							//could have problems when array exceeds
 							long[] newarr = new long[size+message.size()+2];
