@@ -60,8 +60,8 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 			}
 			vertex.getValue().setArray(newArr);
 
-			int query_in = ((GraphIsomorphismWorkerContext)getWorkerContext()).getInVertex(new Long(0)).size();
-			int query_out = ((GraphIsomorphismWorkerContext)getWorkerContext()).getOutVertex(new Long(0)).size();
+			int query_in = ((GraphIsomorphismWorkerContext)getWorkerContext()).getInVertex(graph_array.get(0).getKey()).size();
+			int query_out = ((GraphIsomorphismWorkerContext)getWorkerContext()).getOutVertex(graph_array.get(0).getKey()).size();
 			int ver_in = vertex.getValue().size();
 			int ver_out = 0;
 			for (Edge<LongWritable,FloatWritable> item:vertex.getEdges()) {
@@ -76,8 +76,8 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 		}
 		else{
 			int curr = ((GraphIsomorphismWorkerContext)getWorkerContext()).getCurr_node();
-			int query_in = ((GraphIsomorphismWorkerContext)getWorkerContext()).getInVertex(new Long(curr)).size();
-			int query_out = ((GraphIsomorphismWorkerContext)getWorkerContext()).getOutVertex(new Long(curr)).size();
+			int query_in = ((GraphIsomorphismWorkerContext)getWorkerContext()).getInVertex(graph_array.get(curr).getKey()).size();
+			int query_out = ((GraphIsomorphismWorkerContext)getWorkerContext()).getOutVertex(graph_array.get(curr).getKey()).size();
 			int ver_in = vertex.getValue().size();
 			int ver_out = 0;
 			for (Edge<LongWritable,FloatWritable> item:vertex.getEdges()) {
