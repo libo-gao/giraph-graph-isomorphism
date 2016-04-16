@@ -69,10 +69,12 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 				ver_out++;
 			}
 			if(ver_in>=query_in&&ver_out>=query_out){
-				long[] temp = new long[1];
-				temp[0] = vertex.getId().get();
-				vertex.setValue(new LongArrayWritable(temp));
-				sendMessage(vertex.getId(),new LongArrayWritable(temp));
+				long[] temp;
+				for (Edge<LongWritable, FloatWritable> edge : vertex.getEdges()) {
+					temp = new long[1];
+					temp[0]=vertex.getId().get();
+					sendMessage(edge.getTargetVertexId(), new LongArrayWritable(temp));
+				}
 			}
 			vertex.voteToHalt();
 		}
