@@ -7,7 +7,9 @@ import java.util.Set;
 public class queryGraph {
     HashMap<Long, queryGraphVertex> graph;
 
-    queryGraph(){}
+    queryGraph(){
+        graph = new HashMap<Long, queryGraphVertex>();
+    }
 
     queryGraphVertex getVertex(Long id){
         return graph.get(id);

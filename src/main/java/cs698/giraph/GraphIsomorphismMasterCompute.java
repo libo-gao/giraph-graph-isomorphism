@@ -69,7 +69,6 @@ public abstract class GraphIsomorphismMasterCompute extends DefaultMasterCompute
 		} catch (IOException e) {
 			LOG.error("Could not load local cache files: " + inputPath, e);
 		}
-
 	}
 
 	/**
@@ -79,8 +78,8 @@ public abstract class GraphIsomorphismMasterCompute extends DefaultMasterCompute
 	@Override
 	public void initialize() throws InstantiationException,
 		IllegalAccessException{
-		load_queryGraph();
-		query.build();
+		//load_queryGraph();
+		//query.build();
 	}
 
 }

@@ -78,11 +78,11 @@ public class GraphIsomorphismWorkerContext extends WorkerContext {
             inputPath = new Path(inputFile.get(configuration));
 
             FileSystem fs = FileSystem.getLocal(getConf());
-            BufferedReader in = new BufferedReader(new InputStreamReader(
-                    fs.open(inputPath), Charset.defaultCharset()));
+            BufferedReader in = new BufferedReader(new InputStreamReader(fs.open(inputPath), Charset.defaultCharset()));
             String line;
             while ((line = in.readLine()) != null) {
                 String[] tokens = line.split(" ");
+                //LOG.info("test:+++++"+line);
                 query.insert(Long.parseLong(tokens[0]),Long.parseLong(tokens[1]));
             }
             in.close();
@@ -97,6 +97,7 @@ public class GraphIsomorphismWorkerContext extends WorkerContext {
      * @param configuration the conf
      */
     private void buildQueryGraph(Configuration configuration) {
+        query = new queryGraph();
         loadQueryGraph(configuration);
         query.build();
         serializeGraph();
