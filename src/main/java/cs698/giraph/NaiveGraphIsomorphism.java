@@ -27,12 +27,13 @@ import tl.lin.data.pair.PairOfLongs;
 
 public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongArrayWritable, FloatWritable, LongArrayWritable>{
 
-	private queryGraph graph = ((GraphIsomorphismWorkerContext)getWorkerContext()).getQueryGraph();
-	private List<PairOfLongs> graph_array = ((GraphIsomorphismWorkerContext)getWorkerContext()).getGraphArray();
 
 	//first superstep store the innode
 	@Override
 	public void compute(Vertex<LongWritable, LongArrayWritable, FloatWritable> vertex, Iterable<LongArrayWritable> messages) throws IOException{
+		queryGraph graph = ((GraphIsomorphismWorkerContext)getWorkerContext()).getQueryGraph();
+		List<PairOfLongs> graph_array = ((GraphIsomorphismWorkerContext)getWorkerContext()).getGraphArray();
+
 		//in superstep 0 do not volt to halt
 		//superstep 0: sends message of in-Vertex information
 		//superstep 1: stores the in-Vertex information in vertex value, filters the unqualified vertexes
@@ -104,7 +105,7 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 
 				//vertex has not been visited
 				if(ver_in>=query_in&&ver_out>=query_out){
-					if(!Connected(vertex, curr, message)) continue;
+					if(!Connected(graph, graph_array, vertex, curr, message)) continue;
 					if (graph_array.get(curr).getRightElement() != new Long(0)) {
 						sendMessage(vertex.getId(), addOne(message,vertex.getId().get()));
 					} else {
@@ -118,11 +119,11 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 		}
 	}
 
-	boolean Connected(Vertex<LongWritable, LongArrayWritable, FloatWritable> vertex, int curr, LongArrayWritable msg){
+	boolean Connected(queryGraph graph, List<PairOfLongs> graph_array, Vertex<LongWritable, LongArrayWritable, FloatWritable> vertex, int curr, LongArrayWritable msg){
 		//inEdge
 		Set<Long> in = graph.getVertex(graph_array.get(curr).getLeftElement()).inNode;
 		for (Long id:in) {
-			int index = containsBefore(curr,id);
+			int index = containsBefore(graph_array, curr,id);
 			if(index==-1) continue;
 			long potential_in = msg.get(index);
 			if(!contains(vertex.getValue(),potential_in)) return false;
@@ -131,7 +132,7 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 		//outEdge
 		Set<Long> out = graph.getVertex(graph_array.get(curr).getLeftElement()).outNode;
 		for (Long id:out){
-			int index = containsBefore(curr, id);
+			int index = containsBefore(graph_array, curr, id);
 			if(index==-1) continue;
 			long potential_out = msg.get(index);
 			int has = 0;
@@ -154,7 +155,7 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 		return new LongArrayWritable(temp);
 	}
 
-	int containsBefore(int end, long id){
+	int containsBefore(List<PairOfLongs> graph_array, int end, long id){
 		for(int i = 0;i<end;i++){
 			if(graph_array.get(i).getLeftElement()==id) return i;
 		}
