@@ -63,8 +63,8 @@ public class LongArrayVertexInputFormat extends
         @Override
         protected LongArrayWritable getValue(JSONArray jsonVertex) throws
                 JSONException, IOException {
-            long[] temp= new long[1];
-            temp[0]=jsonVertex.getLong(1);
+            long[] temp= new long[0];
+            //temp[0]=jsonVertex.getLong(1);
             return new LongArrayWritable(temp);
         }
 
