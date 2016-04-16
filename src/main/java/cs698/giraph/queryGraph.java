@@ -1,6 +1,7 @@
 package cs698.giraph;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -37,5 +38,9 @@ class queryGraphVertex {
     public Set<Long> inNode;
     public Set<Long> outNode;
     public Long id;
-    queryGraphVertex(Long nodeId){id = nodeId;}
+    queryGraphVertex(Long nodeId){
+        id = nodeId;
+        inNode = new HashSet<Long>();
+        outNode = new HashSet<Long>();
+    }
 }
