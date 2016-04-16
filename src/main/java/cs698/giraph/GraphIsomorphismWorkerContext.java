@@ -85,7 +85,7 @@ public class GraphIsomorphismWorkerContext extends WorkerContext {
             while ((line = in.readLine()) != null) {
                 String[] tokens = line.split(" ");
                 //LOG.info("test:+++++"+line);
-                query.insert(Long.parseLong(tokens[0]),Long.parseLong(tokens[1]));
+                query.insert(new Long(tokens[0]),new Long(tokens[1]));
             }
             in.close();
         } catch (IOException e) {
