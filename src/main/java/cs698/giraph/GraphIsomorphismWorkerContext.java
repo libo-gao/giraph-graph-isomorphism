@@ -22,7 +22,7 @@ import tl.lin.data.pair.PairOfLongs;
  */
 public class GraphIsomorphismWorkerContext extends WorkerContext {
 
-    private queryGraph query;
+    private queryGraph query = new queryGraph();
     private List<PairOfLongs> graph_array;
     private int curr_node;
 
@@ -43,6 +43,8 @@ public class GraphIsomorphismWorkerContext extends WorkerContext {
     }
 
     queryGraph getQueryGraph(){
+
+        if(query==null) LOG.info("test___________________________+find null");
         return query;
     }
 
@@ -97,7 +99,6 @@ public class GraphIsomorphismWorkerContext extends WorkerContext {
      * @param configuration the conf
      */
     private void buildQueryGraph(Configuration configuration) {
-        query = new queryGraph();
         loadQueryGraph(configuration);
         query.build();
         serializeGraph();
