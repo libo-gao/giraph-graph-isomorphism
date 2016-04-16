@@ -27,9 +27,17 @@ public class queryGraph {
     void insert(Long source, Long dest){
         if(graph.containsKey(source)){
             graph.get(source).outNode.add(dest);
+            if(!graph.containsKey(dest)){
+                graph.put(dest,new queryGraphVertex(dest));
+            }
         }
         else{
-            graph.put(source, new queryGraphVertex(dest));
+            queryGraphVertex temp = new queryGraphVertex(source);
+            temp.outNode.add(dest);
+            graph.put(source, temp);
+            if(!graph.containsKey(dest)){
+                graph.put(dest,new queryGraphVertex(dest));
+            }
         }
     }
 }
