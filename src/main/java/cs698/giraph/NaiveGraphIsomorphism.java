@@ -88,6 +88,11 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 			for (Edge<LongWritable,FloatWritable> item:vertex.getEdges()) {
 				ver_out++;
 			}
+			if(getSuperstep()==6){
+				long[] temps = new long[1];
+				temps[0]=1;
+				vertex.setValue(new LongArrayWritable(temps));
+			}
 
 			for (LongArrayWritable message: messages) {
 				//if this vertex has been visted
@@ -104,6 +109,11 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 								sendMessage(edge.getTargetVertexId(), message);
 							}
 						}
+					}
+					if(getSuperstep()==6){
+						long[] temps = new long[1];
+						temps[0]=0;
+						vertex.setValue(new LongArrayWritable(temps));
 					}
 					continue;
 				}
@@ -134,12 +144,6 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 							for (Edge<LongWritable, FloatWritable> edge : vertex.getEdges()) {
 								sendMessage(edge.getTargetVertexId(), addOne(message, vertex.getId().get()));
 							}
-							if(getSuperstep()==6){
-								long[] temp = new long[1];
-								temp[0]=0;
-								vertex.setValue(new LongArrayWritable(temp));
-							}
-
 						}
 					}
 				}
