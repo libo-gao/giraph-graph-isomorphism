@@ -98,23 +98,10 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 					}
 					continue;
 				}
+
 				//vertex has not been visited
 				else if(ver_in>=query_in&&ver_out>=query_out){
-					/*
-					if(getSuperstep()==6){
-						long[] temps = new long[1];
-						temps[0]=curr;
-						vertex.setValue(new LongArrayWritable(temps));
-					}
-					*/
 					if(!Connected(graph, graph_array, vertex, curr, message)) continue;
-					/*
-					if(getSuperstep()==6){
-						long[] temps = new long[1];
-						temps[0]=curr*curr*curr*curr;
-						vertex.setValue(new LongArrayWritable(temps));
-					}
-					*/
 					if (graph_array.get(curr).getRightElement() != new Long(0)) {
 						long sig = graph_array.get(curr).getRightElement();
 						int index=0;
