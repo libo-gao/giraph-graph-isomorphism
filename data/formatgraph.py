@@ -1,7 +1,7 @@
-path = "wiki-vote.txt"
+path = "p2p-Gnutella08.txt"
 
 f1 = file(path, "r")
-f3 = file("revised-wiki-vote",'w')
+f3 = file("revised-p2p",'w')
 	
 line = f1.readline()
 tokens = line.split()
