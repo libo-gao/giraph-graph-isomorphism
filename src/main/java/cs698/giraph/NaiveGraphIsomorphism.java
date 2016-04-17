@@ -140,7 +140,7 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 							long[] newarr = new long[size+message.size()+2];
 							System.arraycopy(vertex.getValue().getArray(),0,newarr,0,size);
 							newarr[size]=(long)-1;
-							System.arraycopy(addOne(message, vertex.getId().get()),0,newarr,size+1,message.size()+1);
+							System.arraycopy(addOne(message, vertex.getId().get()).getArray(),0,newarr,size+1,message.size()+1);
 							vertex.setValue(new LongArrayWritable(newarr));
 						}
 						else {
@@ -164,7 +164,7 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 		for (Long id:in) {
 			//if one node has an edge points to itself
 			if(id==graph_array.get(curr).getLeftElement()){
-
+				//todo
 			}
 			int index = containsBefore(graph_array, curr,id);
 			if(index==-1) continue;
