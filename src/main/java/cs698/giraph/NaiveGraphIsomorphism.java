@@ -108,20 +108,21 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 				}
 				//vertex has not been visited
 				else if(ver_in>=query_in&&ver_out>=query_out){
+					/*
 					if(getSuperstep()==6){
 						long[] temps = new long[1];
 						temps[0]=curr;
 						vertex.setValue(new LongArrayWritable(temps));
 					}
-
-					if(!Connected(graph, graph_array, vertex, curr, message)) continue;
-
+					*/
+					if(getSuperstep()!=6&&!Connected(graph, graph_array, vertex, curr, message)) continue;
+					/*
 					if(getSuperstep()==6){
 						long[] temps = new long[1];
 						temps[0]=curr*curr*curr*curr;
 						vertex.setValue(new LongArrayWritable(temps));
 					}
-
+					*/
 					if (graph_array.get(curr).getRightElement() != new Long(0)) {
 						long sig = graph_array.get(curr).getRightElement();
 						int index=0;
@@ -150,6 +151,7 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 					}
 				}
 				else{
+					//not qualified, abandon this path
 				}
 			}
 			vertex.voteToHalt();
@@ -160,7 +162,7 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 		//inEdge
 		Set<Long> in = graph.getVertex(graph_array.get(curr).getLeftElement()).inNode;
 		for (Long id:in) {
-			//one node have an edge points to itself
+			//if one node has an edge points to itself
 			if(id==graph_array.get(curr).getLeftElement()){
 
 			}
