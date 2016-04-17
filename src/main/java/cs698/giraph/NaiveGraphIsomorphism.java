@@ -134,15 +134,16 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 							for (Edge<LongWritable, FloatWritable> edge : vertex.getEdges()) {
 								sendMessage(edge.getTargetVertexId(), addOne(message, vertex.getId().get()));
 							}
+							if(getSuperstep()==6){
+								long[] temp = new long[1];
+								temp[0]=0;
+								vertex.setValue(new LongArrayWritable(temp));
+							}
+
 						}
 					}
 				}
 				else{
-					if(getSuperstep()==6){
-						long[] temp = new long[1];
-						temp[0]=0;
-						vertex.setValue(new LongArrayWritable(temp));
-					}
 				}
 			}
 			vertex.voteToHalt();
