@@ -26,6 +26,7 @@ public class GraphIsomorphismWorkerContext extends WorkerContext {
     private queryGraph query = new queryGraph();
     private ArrayList<PairOfLongs> graph_array = new ArrayList<PairOfLongs>();
     private int curr_node;
+    private int addition;
 
     public static final StrConfOption inputFile =
             new StrConfOption("GraphIsomorphism.query", " ",
@@ -118,6 +119,7 @@ public class GraphIsomorphismWorkerContext extends WorkerContext {
             IllegalAccessException {
         buildQueryGraph(getContext().getConfiguration());
         curr_node=1;
+        addition = 1;
     }
 
     @Override
@@ -128,7 +130,14 @@ public class GraphIsomorphismWorkerContext extends WorkerContext {
     public void postSuperstep() {
         if(getSuperstep()>1){
             if(graph_array.get(curr_node).getRightElement()==new Long(0)) {
-                curr_node++;
+                curr_node+=addition;
+                if(addition==0){
+                    addition=1;
+                }
+            }
+            else{
+                curr_node+=addition;
+                addition = 0;
             }
         }
     }
