@@ -124,10 +124,6 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 						//terminate condition
 						if(curr>=graph_array.size()-1){
 
-							long[] test = new long[1];
-							test[0]=curr;
-							vertex.setValue(new LongArrayWritable(test));
-							/*
 							int size = vertex.getValue().size();
 							//could have problems when array exceeds
 							long[] newarr = new long[size+message.size()+2];
@@ -135,16 +131,11 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 							newarr[size]=(long)-1;
 							System.arraycopy(addOne(message, vertex.getId().get()),0,newarr,size+1,message.size()+1);
 							vertex.setValue(new LongArrayWritable(newarr));
-							*/
 						}
 						else {
 							for (Edge<LongWritable, FloatWritable> edge : vertex.getEdges()) {
 								sendMessage(edge.getTargetVertexId(), addOne(message, vertex.getId().get()));
 							}
-
-							long[] test = new long[1];
-							test[0]=curr;
-							vertex.setValue(new LongArrayWritable(test));
 						}
 					}
 				}
