@@ -111,7 +111,7 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 					if(!Connected(graph, graph_array, vertex, curr, message)) continue;
 
 					if (graph_array.get(curr).getRightElement() != new Long(0)) {
-						long index = graph_array.get(curr).getRightElement();
+						long index = graph_array.indexOf(graph_array.get(curr).getRightElement());
 						sendMessage(new LongWritable(message.get((int)index)), addOne(message,vertex.getId().get()));
 					} else {
 						//terminate condition
