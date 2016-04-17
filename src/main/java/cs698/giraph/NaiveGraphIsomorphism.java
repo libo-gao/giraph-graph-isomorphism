@@ -79,6 +79,7 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 			vertex.voteToHalt();
 		}
 		else{
+			//during superstep 2, curr = 1, curr-> array index
 			int curr = ((GraphIsomorphismWorkerContext)getWorkerContext()).getCurr_node();
 			int query_in = ((GraphIsomorphismWorkerContext)getWorkerContext()).getInVertex(graph_array.get(curr).getLeftElement()).size();
 			int query_out = ((GraphIsomorphismWorkerContext)getWorkerContext()).getOutVertex(graph_array.get(curr).getLeftElement()).size();
@@ -117,10 +118,11 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 							if(graph_array.get(index).getLeftElement()==sig) break;
 							index++;
 						}
+						if(index==graph_array.size()-1) continue;
 						sendMessage(new LongWritable(message.get((int)index)), addOne(message,vertex.getId().get()));
 					} else {
 						//terminate condition
-						if(curr>=graph_array.size()){
+						if(curr>=graph_array.size()-1){
 							int size = vertex.getValue().size();
 							//could have problems when array exceeds
 							long[] newarr = new long[size+message.size()+2];
