@@ -161,10 +161,9 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 			int index = containsBefore(graph_array, curr,id);
 			if(index==-1) continue;
 			long potential_in = msg.getArray()[index];
-
 			if(!contains(vertex.getValue(),potential_in)) return false;
 		}
-/***
+
 		//outEdge
 		Set<Long> out = graph.getVertex(graph_array.get(curr).getLeftElement()).outNode;
 		for (Long id:out){
@@ -184,7 +183,7 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 			}
 			if(has==0) return false;
 		}
-*/
+
 		return true;
 	}
 
