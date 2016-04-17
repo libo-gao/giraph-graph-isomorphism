@@ -106,13 +106,13 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 					}
 					continue;
 				}
-
 				//vertex has not been visited
-				if(ver_in>=query_in&&ver_out>=query_out){
+				else if(ver_in>=query_in&&ver_out>=query_out){
 					if(!Connected(graph, graph_array, vertex, curr, message)) continue;
 
 					if (graph_array.get(curr).getRightElement() != new Long(0)) {
-						sendMessage(vertex.getId(), addOne(message,vertex.getId().get()));
+						long index = graph_array.get(curr).getRightElement();
+						sendMessage(new LongWritable(message.get((int)index)), addOne(message,vertex.getId().get()));
 					} else {
 						//terminate condition
 						if(curr>=graph_array.size()){
