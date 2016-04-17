@@ -129,15 +129,16 @@ public class GraphIsomorphismWorkerContext extends WorkerContext {
     @Override
     public void postSuperstep() {
         if(getSuperstep()>1){
-            if(graph_array.get(curr_node).getRightElement()==new Long(0)) {
-                curr_node+=addition;
-                if(addition==0){
-                    addition=1;
+            if(addition==1){
+                if(graph_array.get(curr_node).getRightElement()==new Long(0)) {
+                    curr_node++;
+                }
+                else{
+                    addition = 0;
                 }
             }
             else{
-                curr_node+=addition;
-                addition = 0;
+                addition = 1;
             }
         }
     }
