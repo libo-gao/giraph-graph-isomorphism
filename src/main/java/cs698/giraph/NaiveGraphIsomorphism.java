@@ -44,7 +44,7 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 				vertex.getValue().setArray(temp);
 			}
 			int size = 0;
-			if(vertex.getValue()!=null) {
+			if(vertex.getValue().getArray()!=null) {
 				size = vertex.getValue().getArray().length;
 			}
 			int num_message = 0;
