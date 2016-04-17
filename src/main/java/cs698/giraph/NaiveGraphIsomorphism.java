@@ -161,10 +161,6 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 			int index = containsBefore(graph_array, curr,id);
 			if(index==-1) continue;
 			long potential_in = msg.getArray()[index];
-			long[] temps = new long[2];
-			temps[0]=potential_in;
-			temps[1]=-1;
-			vertex.setValue(new LongArrayWritable(temps));
 
 			if(!contains(vertex.getValue(),potential_in)) return false;
 		}
