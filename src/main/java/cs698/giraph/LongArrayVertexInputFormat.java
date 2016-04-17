@@ -88,5 +88,6 @@ public class LongArrayVertexInputFormat extends
                     "Couldn't get vertex from line " + line, e);
         }
 
+
     }
 }
