@@ -160,6 +160,10 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 		//inEdge
 		Set<Long> in = graph.getVertex(graph_array.get(curr).getLeftElement()).inNode;
 		for (Long id:in) {
+			//one node have an edge points to itself
+			if(id==graph_array.get(curr).getLeftElement()){
+
+			}
 			int index = containsBefore(graph_array, curr,id);
 			if(index==-1) continue;
 			long potential_in = msg.get(index);

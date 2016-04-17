@@ -134,6 +134,7 @@ public class GraphIsomorphismWorkerContext extends WorkerContext {
                     curr_node++;
                 }
                 else{
+                    curr_node++;
                     addition = 0;
                 }
             }
