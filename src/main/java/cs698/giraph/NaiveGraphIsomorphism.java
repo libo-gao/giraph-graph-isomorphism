@@ -43,13 +43,16 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 				long[] temp = new long[0];
 				vertex.getValue().setArray(temp);
 			}
-			int size = vertex.getValue().getArray().length;
+			int size = 0;
+			if(vertex.getValue()!=null) {
+				size = vertex.getValue().getArray().length;
+			}
 			int num_message = 0;
 			for (LongArrayWritable item:messages) {
 				num_message++;
 			}
 			long[] newArr = new long[size+num_message];
-			System.arraycopy(vertex.getValue().getArray(),0,newArr,0,size);
+			if(size!=0) System.arraycopy(vertex.getValue().getArray(),0,newArr,0,size);
 			int i = 0;
 			for (LongArrayWritable item:messages){
 				newArr[i+size]=item.get(0);
