@@ -4,18 +4,10 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.giraph.Algorithm;
-import org.apache.giraph.bsp.CentralizedServiceWorker;
-import org.apache.giraph.comm.WorkerClientRequestProcessor;
 import org.apache.giraph.edge.Edge;
 import org.apache.giraph.graph.BasicComputation;
-import org.apache.giraph.graph.GraphState;
 import org.apache.giraph.graph.Vertex;
-import org.apache.giraph.utils.*;
-import org.apache.giraph.worker.WorkerGlobalCommUsage;
 import org.apache.hadoop.io.*;
-import org.apache.hadoop.io.ArrayWritable;
-import org.apache.hadoop.yarn.util.SystemClock;
 import tl.lin.data.array.LongArrayWritable;
 import tl.lin.data.pair.PairOfLongs;
 /*
@@ -115,7 +107,7 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 						vertex.setValue(new LongArrayWritable(temps));
 					}
 					*/
-					if(getSuperstep()!=6&&!Connected(graph, graph_array, vertex, curr, message)) continue;
+					if(!Connected(graph, graph_array, vertex, curr, message)) continue;
 					/*
 					if(getSuperstep()==6){
 						long[] temps = new long[1];
@@ -168,16 +160,25 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 			}
 			int index = containsBefore(graph_array, curr,id);
 			if(index==-1) continue;
-			long potential_in = msg.get(index);
+			long potential_in = msg.getArray()[index];
+			long[] temps = new long[2];
+			temps[0]=potential_in;
+			temps[1]=-1;
+			vertex.setValue(new LongArrayWritable(temps));
+
 			if(!contains(vertex.getValue(),potential_in)) return false;
 		}
-
+/***
 		//outEdge
 		Set<Long> out = graph.getVertex(graph_array.get(curr).getLeftElement()).outNode;
 		for (Long id:out){
+			//if one node has an edge points to itself
+			if(id==graph_array.get(curr).getLeftElement()){
+				//todo
+			}
 			int index = containsBefore(graph_array, curr, id);
 			if(index==-1) continue;
-			long potential_out = msg.get(index);
+			long potential_out = msg.getArray()[index];
 			int has = 0;
 			for (Edge<LongWritable, FloatWritable> edge : vertex.getEdges()) {
 				if(edge.getTargetVertexId().get()==potential_out){
@@ -187,6 +188,7 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 			}
 			if(has==0) return false;
 		}
+*/
 		return true;
 	}
 
