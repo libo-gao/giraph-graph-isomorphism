@@ -110,7 +110,6 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 				//vertex has not been visited
 				else if(ver_in>=query_in&&ver_out>=query_out){
 					if(!Connected(graph, graph_array, vertex, curr, message)) continue;
-
 					if (graph_array.get(curr).getRightElement() != new Long(0)) {
 						long sig = graph_array.get(curr).getRightElement();
 						int index=0;
@@ -123,7 +122,6 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 					} else {
 						//terminate condition
 						if(curr>=graph_array.size()-1){
-
 							int size = vertex.getValue().size();
 							//could have problems when array exceeds
 							long[] newarr = new long[size+message.size()+2];
@@ -137,6 +135,13 @@ public class NaiveGraphIsomorphism extends BasicComputation<LongWritable, LongAr
 								sendMessage(edge.getTargetVertexId(), addOne(message, vertex.getId().get()));
 							}
 						}
+					}
+				}
+				else{
+					if(getSuperstep()==6){
+						long[] temp = new long[1];
+						temp[0]=0;
+						vertex.setValue(new LongArrayWritable(temp));
 					}
 				}
 			}
