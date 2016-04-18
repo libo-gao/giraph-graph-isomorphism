@@ -75,6 +75,7 @@ public class GraphIsomorphismWorkerContext extends WorkerContext {
         graph_array.add(new PairOfLongs(new Long(2), new Long(0)));
         graph_array.add(new PairOfLongs(new Long(3), new Long(0)));
         graph_array.add(new PairOfLongs(new Long(4), new Long(0)));
+        graph_array.add(new PairOfLongs(new Long(5), new Long(0)));
         /*
         //liner
         //1->2->3
