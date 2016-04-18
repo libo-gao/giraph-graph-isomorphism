@@ -60,7 +60,7 @@ public class GraphIsomorphismWorkerContext extends WorkerContext {
         graph_array.add(new PairOfLongs(new Long(5), new Long(3)));
         graph_array.add(new PairOfLongs(new Long(2), new Long(0)));
         */
-        /*
+
         //1->2->3->4
         //2->5
         graph_array.add(new PairOfLongs(new Long(1), new Long(0)));
@@ -68,7 +68,7 @@ public class GraphIsomorphismWorkerContext extends WorkerContext {
         graph_array.add(new PairOfLongs(new Long(3), new Long(0)));
         graph_array.add(new PairOfLongs(new Long(4), new Long(2)));
         graph_array.add(new PairOfLongs(new Long(5), new Long(0)));
-        */
+        
         /*
         //circle
         //1->2->3->1
@@ -83,6 +83,7 @@ public class GraphIsomorphismWorkerContext extends WorkerContext {
         graph_array.add(new PairOfLongs(new Long(2), new Long(0)));
         graph_array.add(new PairOfLongs(new Long(3), new Long(0)));
         */
+        /*
         //star
         //    2
         // 5<-1->3
@@ -91,6 +92,7 @@ public class GraphIsomorphismWorkerContext extends WorkerContext {
         graph_array.add(new PairOfLongs(new Long(2), new Long(1)));
         graph_array.add(new PairOfLongs(new Long(3), new Long(1)));
         graph_array.add(new PairOfLongs(new Long(4), new Long(0)));
+        */
     }
 
     Set<Long> getOutVertex(Long id){
